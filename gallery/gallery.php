@@ -35,6 +35,7 @@
 </div>
 <div>
     <button type="button" onclick="location.href='../upload/upload.php'">Upload new Image</button>
+    <button type="button" onclick="location.href='../upload/upload.php'">Upload new CSV</button>
 </div>
 <div align="center">
 <?php
@@ -65,18 +66,18 @@ if(isset($_POST['submit'])){
             echo "<div>";
             echo '('.$row['image_id'].') '.$row['notes']."<br>";
             echo "From : <font color='red'>".$row["uploader"]."</font><br>";
-            //echo "<i>".$row["uploadTime"]."</i><br>";
+            // echo "<i>".$row["uploadTime"]."</i><br>";
             $id  = $row['image_id'];
             $sql = "SELECT * FROM tags WHERE `image_id`=$id";
             $result_tag = mysqli_query($db, $sql);
-            // while($tag = mysqli_fetch_array($result_tag)){
-            //     echo $tag['attribute'];
-            //     if(is_null($tag['value'])){}else{
-            //         echo ":" . $tag['value'];
-            //     }
-            //     echo "; ";
+            while($tag = mysqli_fetch_array($result_tag)){
+                echo $tag['attribute'];
+                if(is_null($tag['value'])){}else{
+                    echo ":" . $tag['value'];
+                }
+                echo "; ";
                 
-            // }
+            }
             echo "</div>";
         echo "</div>";
     }
