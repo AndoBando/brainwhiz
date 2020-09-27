@@ -2,11 +2,11 @@
     $umsg = "";
     $pmsg = "";
     if(isset($_POST["btn"])){
-        $db = mysqli_connect("localhost", "root", "", "photos");
+        $db = mysqli_connect("localhost", "root", "", "brainwiz");
         $usr = $_POST["usr"];
         $sql = "SELECT * FROM users WHERE `username`='$usr' LIMIT 1";
         $result = mysqli_query($db, $sql);
-        if(mysqli_num_rows($result) > 0){
+        if($result and mysqli_num_rows($result) > 0){
            $row = mysqli_fetch_assoc($result);
            if($row["password"] == $_POST["pass"]){
                 session_start();

@@ -25,22 +25,62 @@
         echo "No account logged in. \t";
         echo "<button onclick='location.href=\"../login/login.php\"' type=\"button\"> Login</button>";
     }
+
+
+    function tagdropdown($tagname,$display){
+        $db = mysqli_connect("localhost", "root", "", "brainwiz");
+        $sql = "SELECT DISTINCT `value` FROM `tags` WHERE tags.attribute='$tagname'";
+        $result = mysqli_query($db, $sql);
+        echo "<label for='".$tagname."'>$display </label>";
+        echo '<select name="'.$tagname.'" id="'.$tagname.'">';
+        echo '<option value=""></option>';
+        while($row = mysqli_fetch_array($result)){
+            $value = $row['value'];
+            echo '<option value="'.$value.'">'.$value.'</option>';
+        }
+        echo "</select>";
+        echo '<span style="color:LightGray;">('.$tagname.')</span>';
+    }
+
+    function taginput($tagname,$display){
+        echo "<label for='".$tagname."'>$display </label>";
+        echo '<input name="'.$tagname.'" id="'.$tagname.'" type="text">';
+        echo '<span style="color:LightGray;">('.$tagname.')</span>';
+    }
     ?>
 </div>  
 <div id=content>
     <h1>Upload Image</h1>
     <form action="uploadprocess.php" method="post" accept-charset="utf-8" enctype="multipart/form-data">
         <input type="hidden" name="size" value="1000000">
-        <h5> File </h5>
+        <h4> File </h4>
         <div>
-           Upload image : 
-           <input type="file" name="image">
+            <div>
+                Upload Nifti Image : 
+                <input type="file" name="nifti">
+            </div>
+<!--             <div>
+                Upload Label File :  
+                <input type="file" name="label">
+            </div> -->
         </div>
         <br>
+
         <div>
-            <textarea name="text" cols="40" rows="2" placeholder="Give a short description of the image here"></textarea>   
+            <h4> Text Description </h4>
+            <div>
+                <p> <label>Short Description</label> </p>
+                <textarea name="text" cols="40" rows="2" placeholder="Give a short name to the image here. This will function essentially as a title for the image"></textarea>   
+            </div>
+
+            <div>
+                <p> <label>Long Description and Notes</label> </p>
+                <textarea name="long_text" cols="40" rows="4" placeholder='Give a longer description of the image here. This will only be visible in the "detailed view" of the image'></textarea>   
+            </div>
+            <span style="color:Gray;">(Neither of these sections are currently searchable)</span>
         </div>
-        <h5> Uploader </h5>
+
+        <h4> Uploader </h4>
         <div>
             <?php
             if(isset($_SESSION["logged_in"])){
@@ -62,8 +102,33 @@
             Upload image anonymously
         </div>
         <div>
-            <h5> Image Attributes and Tags</h5>
+            <h4> Image Attributes and Tags</h4>
+
             <div>
+                <p> Use this section to quickly insert common attributes with values that have already been created.</p>
+                <div> <?php taginput("animal","Animal:") ?> </div>
+                <div> <?php taginput("date","Date:") ?> </div>
+                <div> <?php tagdropdown("genotype","Genotype:") ?> </div>
+                <div> <?php tagdropdown("sex","Sex:") ?> </div>
+                <div> <?php taginput("dob","DOB:") ?> </div>
+                <div> <?php taginput("sambabrunno","SAMBA Brunno:") ?> </div>
+                <!-- <div> <?php taginput("t1memrirare","T1MEMRIRARE:") ?> </div> -->
+                <!-- <div> <?php taginput("t1map","T1map:") ?> </div> -->
+                <!-- <div> <?php taginput("t1map2","T1map2:") ?> </div> -->
+                <div> <?php taginput("weight","Weight:") ?> </div>
+                <!-- <div> <?php taginput("dwi","DWI:") ?> </div> -->
+                <!-- <div> <?php taginput("gre","Gre:") ?> </div> -->
+                <div> <?php tagdropdown("study","Study:") ?> </div>
+                <div> <?php tagdropdown("imagetype","Image type:") ?> </div>
+                <!-- <div> <?php taginput("t2turborare","T2TurboRARE:") ?> </div>
+                <div> <?php taginput("perf1_2","Perf1_2:") ?> </div>
+                <div> <?php taginput("perf2_1p5","Perf2_1p5:") ?> </div>
+                <div> <?php taginput("efficiency","Efficiency:") ?> </div>
+                <div> <?php taginput("labeloptim","LabelOptim:") ?> </div>
+                <div> <?php taginput("controloptim","controlOptim:") ?> </div> -->
+            </div>
+            <div>
+                <p> Use this section to insert less common tags, or to give new values to existing attributes</p>
                 <textarea name="tags" cols="40" rows="4" placeholder="attribute1:value; tag1; tag2; ... e.g. location:rome; portait; night;"></textarea>
             </div>
         </div>

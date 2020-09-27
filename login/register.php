@@ -5,7 +5,7 @@ $umsg = "";
 if (isset($_POST["btn"])){
     $usr = $_POST["usr"];
     $pass = $_POST["pass"];
-    $db = mysqli_connect("localhost", "root", "", "photos");
+    $db = mysqli_connect("localhost", "root", "", "brainwiz");
     $sql = "SELECT * FROM users WHERE `username`='$usr'";
     $result = mysqli_query($db, $sql);
     if(mysqli_num_rows($result) > 0){
